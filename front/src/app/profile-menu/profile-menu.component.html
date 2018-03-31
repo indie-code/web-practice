@@ -1,0 +1,26 @@
+<ng-container *ngIf="loaded; else loading">
+    <ng-container *ngIf="user; else notAuthenticated">
+        <button mat-button [matMenuTriggerFor]="menu">{{ user.name }}</button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>Item 1</button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="signOut()" i18n="Меню профиля | Выход из системы @@signOut">Выход</button>
+        </mat-menu>
+    </ng-container>
+</ng-container>
+
+<ng-template #loading>
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+</ng-template>
+
+<ng-template #notAuthenticated>
+    <a mat-button routerLink="/auth">
+        <mat-icon>account_circle</mat-icon>
+        <ng-container i18n="Меню профиля | Кнопка входа в систему">Войти</ng-container>
+    </a>
+
+    <a mat-button routerLink="/auth/sign-up">
+        <mat-icon>directions_walk</mat-icon>
+        <ng-container i18n="Меню профиля | Кнопка регистрации в системе">Зарегистрироваться</ng-container>
+    </a>
+</ng-template>

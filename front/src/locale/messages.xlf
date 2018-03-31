@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="signOut" datatype="html">
+        <source>Выход</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile-menu/profile-menu.component.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <note priority="1" from="description"> Выход из системы </note>
+        <note priority="1" from="meaning">Меню профиля </note>
+      </trans-unit>
+      <trans-unit id="3c304a6acdd7e30d994dd07187f699423c6bfbca" datatype="html">
+        <source>Войти</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile-menu/profile-menu.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description"> Кнопка входа в систему</note>
+        <note priority="1" from="meaning">Меню профиля </note>
+      </trans-unit>
+      <trans-unit id="a754487b00a222b8e82fc885a6e56c8ca1fc0bf4" datatype="html">
+        <source>Зарегистрироваться</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/profile-menu/profile-menu.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <note priority="1" from="description"> Кнопка регистрации в системе</note>
+        <note priority="1" from="meaning">Меню профиля </note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
