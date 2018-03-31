@@ -1,0 +1,10 @@
+:host {
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: stretch;
+    display: flex;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}

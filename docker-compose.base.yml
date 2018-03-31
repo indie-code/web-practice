@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:10.3-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: app
+      POSTGRES_USER: app
+      POSTGRES_DB: app
+    ports:
+      - 15432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  php:
+    build:
+      context: ./api
+      dockerfile: ./docker/php/Dockerfile
+    restart: always
+    volumes:
+      - ./api:/var/www/html
+      - ~/.composer:/root/.composer
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./api:/var/www/html
+      - ./front/nginx/www.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /var/www/html
+    ports:
+      - 8080:80
+
+  redis:
+    image: redis:alpine
+    command: --requirepass $REDIS_PASSWORD
+
+volumes:
+  db_data:

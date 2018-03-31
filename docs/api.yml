@@ -1,0 +1,109 @@
+swagger: "2.0"
+info:
+  description: "Сервис для продвижения видеоуроков"
+  version: "1.0.0"
+  title: "Web Practice"
+host: "web-practice.local"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /auth/sign-up:
+    post:
+      summary: "Регистрирует нового пользователя"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/SignUpForm"
+      responses:
+        200:
+          description: "Пользователь зарегистрирован"
+          schema:
+            properties:
+              data:
+                $ref: "#/definitions/AuthResponse"
+        422:
+          description: "Отправлены некорректные данные"
+  /auth/sign-in:
+    post:
+      summary: "Авторизует пользователя"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/SignInForm"
+      responses:
+        200:
+          description: "Пользователь авторизован"
+          schema:
+            properties:
+              data:
+                $ref: "#/definitions/AuthResponse"
+        403:
+          description: "Логин и пароль некорректные"
+  /auth/user:
+    get:
+      summary: "Возвращает текущего авторизованного пользователя"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Объект авторизации (пользователь)"
+          schema:
+            type: "object"
+            properties:
+              data:
+                $ref: "#/definitions/AuthResponse"
+        401:
+          description: "Пользователь неавторизован"
+
+definitions:
+  SignUpForm:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        example: "test@test.ru"
+      password:
+        type: "string"
+        example: "123456"
+      password_confirmation:
+        type: "string"
+        example: "123456"
+  SignInForm:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+        example: "test@test.ru"
+      password:
+        type: "string"
+        example: "123456"
+  AuthResponse:
+    type: "object"
+    properties:
+      user:
+        $ref: "#/definitions/User"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        example: "123"
+      name:
+        type: "string"
+        example: "Василий Васильевич Пупкин"
+      email:
+        type: "string"
+        example: "test@test.ru"
