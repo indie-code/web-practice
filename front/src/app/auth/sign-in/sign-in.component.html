@@ -1,12 +1,14 @@
 <mat-card>
     <mat-card-title class="text-center">Авторизация</mat-card-title>
     <mat-card-content>
-        <form class="login-form" [formGroup]="form" (submit)="login()">
+        <form class="login-form" [formGroup]="form" (submit)="signIn()">
             <mat-form-field class="full-width">
                 <input matInput placeholder="E-mail" formControlName="email" />
+                <mat-error>{{ form.get('email').errors }}</mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
                 <input type="password" matInput placeholder="Пароль" formControlName="password" />
+                <mat-error>{{ form.get('password').errors }}</mat-error>
             </mat-form-field>
             <button type="submit" mat-raised-button color="primary">Войти</button>
         </form>

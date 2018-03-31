@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiResponse } from '../auth/auth.service';
+import { ApiResponse } from '../services/auth.service';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -9,10 +9,9 @@ import { ApiService } from '../api.service';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private api: ApiService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.api.get('auth/user').subscribe(data => console.log(data));
   }
 
 }
