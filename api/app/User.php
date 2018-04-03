@@ -25,6 +25,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereUpdatedAt($value)
+ * @property bool $verified
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Attachment[] $attachments
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereVerified($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Video[] $videos
  */
 class User extends Authenticatable
 {
@@ -56,5 +60,10 @@ class User extends Authenticatable
     public function attachments()
     {
         return $this->hasMany(Attachment::class);
+    }
+
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
     }
 }
