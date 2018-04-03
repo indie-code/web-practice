@@ -31,7 +31,12 @@ class JwtTokenMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (! $token = $this->auth->setRequest($request)->getToken()) {
+        $token = $request->bearerToken();
+        if (! $token) {
+            $token = $request->input('api-token');
+        }
+
+        if (! $token) {
             throw new JwtAuthFailedException('tymon.jwt.absent');
         }
 

@@ -1,18 +1,19 @@
 <?php
 
+
 namespace App\Exceptions;
 
-use Exception;
+
 use Illuminate\Http\Response;
 
-class JwtAuthFailedException extends Exception
+class VideoNotFoundException extends \Exception
 {
     public function render($request)
     {
         return response([
-            'message' => 'Пользователь не авторизован',
+            'message' => 'Файл не найден',
             'errors' => [$this->getMessage()],
             'type' => class_basename($this),
-        ], Response::HTTP_UNAUTHORIZED);
+        ], Response::HTTP_NOT_FOUND);
     }
 }

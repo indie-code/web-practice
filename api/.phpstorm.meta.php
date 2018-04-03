@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2018-03-18 22:39:00.
+    * Generated on 2018-04-03 20:36:17.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -146,7 +146,7 @@ namespace PHPSTORM_META {
         'Illuminate\Mail\Markdown' => \Illuminate\Mail\Markdown::class,
         'Illuminate\Contracts\Pipeline\Hub' => \Illuminate\Pipeline\Hub::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -301,7 +301,7 @@ namespace PHPSTORM_META {
         'Illuminate\Mail\Markdown' => \Illuminate\Mail\Markdown::class,
         'Illuminate\Contracts\Pipeline\Hub' => \Illuminate\Pipeline\Hub::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -456,7 +456,7 @@ namespace PHPSTORM_META {
         'Illuminate\Mail\Markdown' => \Illuminate\Mail\Markdown::class,
         'Illuminate\Contracts\Pipeline\Hub' => \Illuminate\Pipeline\Hub::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -611,7 +611,7 @@ namespace PHPSTORM_META {
         'Illuminate\Mail\Markdown' => \Illuminate\Mail\Markdown::class,
         'Illuminate\Contracts\Pipeline\Hub' => \Illuminate\Pipeline\Hub::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -766,7 +766,7 @@ namespace PHPSTORM_META {
         'Illuminate\Mail\Markdown' => \Illuminate\Mail\Markdown::class,
         'Illuminate\Contracts\Pipeline\Hub' => \Illuminate\Pipeline\Hub::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -921,7 +921,7 @@ namespace PHPSTORM_META {
         'Illuminate\Mail\Markdown' => \Illuminate\Mail\Markdown::class,
         'Illuminate\Contracts\Pipeline\Hub' => \Illuminate\Pipeline\Hub::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,
@@ -1076,7 +1076,7 @@ namespace PHPSTORM_META {
         'Illuminate\Mail\Markdown' => \Illuminate\Mail\Markdown::class,
         'Illuminate\Contracts\Pipeline\Hub' => \Illuminate\Pipeline\Hub::class,
         'queue' => \Illuminate\Queue\QueueManager::class,
-        'queue.connection' => \Illuminate\Queue\SyncQueue::class,
+        'queue.connection' => \Illuminate\Queue\RedisQueue::class,
         'queue.worker' => \Illuminate\Queue\Worker::class,
         'queue.listener' => \Illuminate\Queue\Listener::class,
         'queue.failer' => \Illuminate\Queue\Failed\DatabaseFailedJobProvider::class,

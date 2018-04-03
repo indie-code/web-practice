@@ -10,7 +10,12 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::resource('attachments', 'AttachmentsController')
-        ->only(['store'])
-        ->names('attachments');
+    Route::resource('video-files', 'VideoFilesController')
+        ->only(['store', 'show'])
+        ->names('videos')
+        ->parameters(['video_file' => '.*']);
+
+    Route::resource('profile/videos', 'UserVideosController')
+        ->only(['store', 'update', 'index', 'show'])
+        ->names('profile.videos');
 });

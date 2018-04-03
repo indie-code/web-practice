@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests\Feature\AttachmentsControllerTest;
+namespace Tests\Feature\VideoFilesControllerTest;
 
 
 use App\User;
@@ -28,18 +28,17 @@ class StoreTest extends TestCase
      */
      public function attachments_store()
      {
-        Storage::fake();
+        Storage::fake('videos');
 
         $response = $this
             ->loginAs()
-            ->postJson(route('attachments.store'), ['file' => $this->file])
-            ->assertSuccessful()
-        ;
+            ->postJson(route('videos.store'), ['file' => $this->file])
+            ->assertSuccessful();
 
         $this->assertNotNull($response->json('data.id'));
         $this->assertEquals($this->file->hashName(), $response->json('data.file_name'));
 
-        Storage::assertExists($this->file->hashName());
+        Storage::disk('videos')->assertExists($this->file->hashName());
      }
 
     /**
@@ -48,10 +47,10 @@ class StoreTest extends TestCase
      public function not_allowed_store()
      {
          $user = factory(User::class)->create(['verified' => false]);
+
          $this
              ->loginAs($user)
-             ->postJson(route('attachments.store'), ['file' => $this->file])
-             ->assertForbidden()
-             ;
+             ->postJson(route('videos.store'), ['file' => $this->file])
+             ->assertForbidden();
      }
 }

@@ -11,11 +11,18 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication, DatabaseTransactions;
 
+    /**
+     * @var User
+     */
+    protected $auth;
+
     public function loginAs(User $user = null)
     {
         if (! $user) {
             $user = factory(User::class)->create(['verified' => true]);
         }
+
+        $this->auth = $user;
 
         $token = JWTAuth::fromUser($user);
         $this->defaultHeaders = ['Authorization' => "Bearer {$token}"];
