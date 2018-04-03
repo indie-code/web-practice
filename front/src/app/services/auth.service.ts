@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs/Observable';
 import { flatMap, map, publishReplay, refCount, tap } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { TokenStorageService } from '../token-storage.service';
 import { of as observableOf } from 'rxjs/observable/of';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class AuthService {
-    private user$: ReplaySubject<User> = new ReplaySubject<User>(1);
+    private user$: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
     private loadUser$ = this.loadUser().pipe(publishReplay(), refCount());
 
     constructor(
