@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { finalize, first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -33,11 +33,11 @@ export class SignInComponent implements OnInit {
         this.authService.signIn(this.form.value)
             .pipe(
                 first(),
-                finalize(() => this.form.enable()),
+                tap(() => this.form.enable(), () => this.form.enable()),
             )
             .subscribe(
                 () => this.router.navigateByUrl('/'),
-                (error: HttpErrorResponse) => setTimeout(() => this.setErrors(error.error)),
+                (error: HttpErrorResponse) => this.setErrors(error.error),
             );
     }
 

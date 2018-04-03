@@ -51,15 +51,15 @@ describe('SignInComponent', () => {
         expect(component.form.get('password').errors).toEqual(['password error']);
     });
 
-    it('Форма становится неактивна на время выполнения аутентификации', () => {
+    it('Должен деактивировать форму на время выполнения аутентификации', () => {
         const authService: AuthServiceMock = TestBed.get(AuthService);
 
         component.signIn();
 
-        expect(component.form.disabled).toBeTruthy();
+        expect(component.form.disabled).toBeTruthy('Форма не деактивировалась перед запросом');
         authService.signIn$.error(validationErrors);
 
-        expect(component.form.enabled).toBeTruthy();
+        expect(component.form.enabled).toBeTruthy('Форма не активировалась после ответа');
     });
 });
 
