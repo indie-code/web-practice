@@ -17,14 +17,12 @@ describe('AuthInterceptor', () => {
             providers: [
                 {provide: Router, useValue: routerSpy},
                 {provide: TokenStorageService, useClass: TokenStorageMock},
-                {
-                    provide: HTTP_INTERCEPTORS,
-                    useClass: AuthInterceptor,
-                    multi: true,
-                },
+                {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
             ],
         });
+    });
 
+    beforeEach(() => {
         httpClient = TestBed.get(HttpClient);
         httpTestingController = TestBed.get(HttpTestingController);
         tokenService = TestBed.get(TokenStorageService);
@@ -32,8 +30,7 @@ describe('AuthInterceptor', () => {
 
     afterEach(() => httpTestingController.verify());
 
-    it('Сохраняет токен при его получении с api', () => {
-
+    it('should save token after receive "Api-Token" header from any response', () => {
         httpClient.get('sign-in').subscribe(
             () => expect(tokenService.testToken).toBe('auth token'),
         );
@@ -43,33 +40,31 @@ describe('AuthInterceptor', () => {
         request.flush({}, {headers: {'Api-Token': 'auth token'}});
     });
 
-    it('Добавляет токен в каждый http запрос при его наличии', () => {
+    it('should add token to any http request, if token exists', () => {
         tokenService.setToken('auth token');
 
         httpClient.post('url', {}).subscribe();
 
         const req = httpTestingController.expectOne('url');
-
         const authHeader = req.request.headers.get('Authorization');
-        expect(authHeader).toBe('Bearer auth token');
 
+        expect(authHeader).toBe('Bearer auth token');
         req.flush({});
     });
 
-    it('Не добавляет токен в каждый http запрос при его отсутствии', () => {
+    it('should not add token to any http request, if token not exists', () => {
         expect(tokenService.testToken).toBeFalsy();
 
         httpClient.post('url', {}).subscribe();
 
         const req = httpTestingController.expectOne('url');
-
         const authHeader = req.request.headers.get('Authorization');
-        expect(authHeader).toBeFalsy();
 
+        expect(authHeader).toBeFalsy();
         req.flush({});
     });
 
-    it('Не удаляет токен, если он не пришёл с бэкенда', () => {
+    it('should not delete token, if "Api-Token" header is not present in http response', () => {
         tokenService.testToken = 'auth token';
 
         httpClient.post('url', {}).subscribe(
@@ -77,26 +72,23 @@ describe('AuthInterceptor', () => {
         );
 
         const req = httpTestingController.expectOne('url');
-
         req.flush({});
     });
 
-    it('При ответе 401 кодом токен удаляется и пользователя перенаправляет на страницу авторизации', () => {
+    it('should delete token and redirect to sign in page, if have been received http error with 401 status code', () => {
         tokenService.testToken = 'auth token';
 
         httpClient.post('url', {}).subscribe(
             null,
             () => {
                 const navigateSpy = routerSpy.navigateByUrl as jasmine.Spy;
-
                 expect(tokenService.testToken).toBeFalsy();
                 expect(navigateSpy.calls.count()).toBe(1);
-                expect(navigateSpy.calls.first().args[0]).toContain('sign-in');
+                expect(navigateSpy.calls.first().args[0]).toBe('/sign-in');
             },
         );
 
         const req = httpTestingController.expectOne('url');
-
         req.error(new ErrorEvent('Unauthorized'), {status: 401});
     });
 });

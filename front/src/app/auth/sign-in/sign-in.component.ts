@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { first, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { setValidationErrors } from '../../helpers/form-helpers';
 
 @Component({
     selector: 'app-sign-in',
@@ -37,32 +38,7 @@ export class SignInComponent implements OnInit {
             )
             .subscribe(
                 () => this.router.navigateByUrl('/'),
-                (error: HttpErrorResponse) => this.setErrors(error.error),
+                (error: HttpErrorResponse) => setValidationErrors(this.form, error),
             );
-    }
-
-    private setErrors(error: any) {
-        if (!error || !(error instanceof Object)) {
-            return;
-        }
-
-        if (!error.hasOwnProperty('errors')) {
-            return;
-        }
-
-        const errors = error['errors'];
-        if (!error || !(error instanceof Object)) {
-            return;
-        }
-
-        Object.entries(errors).forEach(([key, messages]) => {
-            const control = this.form.get(key);
-
-            if (! control) {
-                return;
-            }
-
-            control.setErrors(messages);
-        });
     }
 }

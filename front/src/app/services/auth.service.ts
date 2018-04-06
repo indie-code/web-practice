@@ -5,6 +5,7 @@ import { flatMap, map, publishReplay, refCount, tap } from 'rxjs/operators';
 import { TokenStorageService } from '../token-storage.service';
 import { of as observableOf } from 'rxjs/observable/of';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { User } from '../models/user';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,6 @@ export class AuthService {
 
     loadUser(): Observable<AuthResponse> {
         if (!this.tokenStorageService.token()) {
-            // TODO: поискать нормальный способ
             return observableOf(undefined);
         }
 
@@ -33,7 +33,7 @@ export class AuthService {
         );
     }
 
-    register(registerForm: RegisterForm): Observable<AuthResponse> {
+    register(registerForm: SignUpForm): Observable<AuthResponse> {
         return this.api.post('auth/sign-up', registerForm).pipe(
             map(response => response.data),
             tap((auth: AuthResponse) => this.user$.next(auth.user)),
@@ -53,27 +53,17 @@ export class AuthService {
     }
 }
 
-export interface RegisterForm {
+export interface SignUpForm {
     email: string;
     password: string;
     password_confirmation: string;
 }
 
-export interface ApiResponse<T> {
-    data: T;
+export interface SignInForm {
+    email: string;
+    password: string;
 }
 
 export interface AuthResponse {
     user: User;
-}
-
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-export interface SignInForm {
-    email: string;
-    password: string;
 }
