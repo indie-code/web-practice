@@ -1,0 +1,10 @@
+export interface Attachment {
+    id: number;
+}
+
+export interface Video {
+    id: number;
+    title: string;
+    description: string;
+    attachment_id: number;
+}

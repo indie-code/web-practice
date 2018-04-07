@@ -1,0 +1,27 @@
+<mat-card-title>Создание нового видео</mat-card-title>
+<mat-card-content>
+    <form class="video-form" [formGroup]="videoForm">
+        <div ngFileDrop [options]="options" [class.drag-over]="dragOver"  (uploadOutput)="onUploadOutput($event)" class="drop-zone">
+            <ng-container *ngIf="! uploading">
+                <mat-icon>file_upload</mat-icon>
+                Перенесите видео сюда
+            </ng-container>
+            <ng-container *ngIf="uploading">
+                Загрузка...
+                <mat-progress-bar [value]="progress" mode="determinate"></mat-progress-bar>
+            </ng-container>
+        </div>
+        <div class="text-fields">
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="Название" formControlName="title"/>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <textarea matInput placeholder="Описание" formControlName="description"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-card-content>

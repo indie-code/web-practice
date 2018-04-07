@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../environments/environment';
 import * as queryString from 'query-string';
@@ -22,8 +22,8 @@ export class ApiService {
     return this.http.get(this.url(url));
   }
 
-  post(url: string, data: object): Observable<any> {
-    return this.http.post(this.url(url), data);
+  post(url: string, data: object, options: object = {}): Observable<any> {
+    return this.http.post(this.url(url), data, options);
   }
 
   delete(url: string): Observable<any> {
@@ -32,5 +32,10 @@ export class ApiService {
 
   put(url: string, data: object): Observable<any> {
       return this.http.put(this.url(url), data);
+  }
+
+  request(method: string, url: string, data: object, options: object): Observable<any> {
+      const req = new HttpRequest(method, this.url(url), data, options);
+      return this.http.request(req);
   }
 }

@@ -24,10 +24,9 @@ export class AuthInterceptor implements HttpInterceptor {
         }
 
         return next.handle(req).pipe(
-            filter(response => response instanceof HttpResponse),
             tap(
                 (response: HttpResponse<any>) => {
-                    if (response.headers.get(this.apiTokenName)) {
+                    if (response.headers && response.headers.get(this.apiTokenName)) {
                         this.tokenStorage.setToken(response.headers.get(this.apiTokenName));
                     }
                 },

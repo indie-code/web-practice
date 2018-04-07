@@ -2,7 +2,7 @@
     <ng-container *ngIf="user; else notAuthenticated">
         <button mat-button [matMenuTriggerFor]="menu">{{ user.name }}</button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item>Item 1</button>
+            <a i18n="Меню профиля |Ссылка на профиль в шапке" routerLink="/profile" mat-menu-item>Профиль</a>
             <mat-divider></mat-divider>
             <button mat-menu-item (click)="signOut()" i18n="Меню профиля | Выход из системы @@signOut">Выход</button>
         </mat-menu>

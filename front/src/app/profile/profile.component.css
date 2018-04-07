@@ -1,0 +1,7 @@
+.profile {
+    display: flex;
+}
+
+.sub-profile-component {
+    flex-grow: 1;
+}
