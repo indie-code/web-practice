@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
+import { setValidationErrors } from '../../helpers/form-helpers';
 
 @Component({
     selector: 'app-sign-up',
@@ -30,31 +31,16 @@ export class SignUpComponent implements OnInit {
         });
     }
 
-    register() {
-        this.authService.register(this.form.value).pipe(first())
+    signUp() {
+        this.form.disable();
+        this.authService.register(this.form.value)
+            .pipe(
+                first(),
+                tap(() => this.form.enable(), () => this.form.enable()),
+            )
             .subscribe(
-                () => this.router.navigateByUrl(''),
-                (response: HttpErrorResponse) => this.setErrors(response.error.errors));
+                () => this.router.navigateByUrl('/'),
+                (error: HttpErrorResponse) => setValidationErrors(this.form, error)
+            );
     }
-
-    private setErrors(errors: SignUpErrors) {
-        if (!(errors instanceof Object)) {
-            return;
-        }
-
-        Object.keys(errors).forEach(attribute => {
-            const control = this.form.get(attribute);
-
-            if (control) {
-                control.setErrors(errors[attribute]);
-            }
-        });
-    }
-
-}
-
-export interface SignUpErrors {
-    name?: string[];
-    email?: string[];
-    password?: string[];
 }

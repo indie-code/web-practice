@@ -2,26 +2,23 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SignUpComponent } from './sign-up.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AuthResponse, AuthService, RegisterForm } from '../../services/auth.service';
+import { AuthResponse, AuthService, SignUpForm } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { makeValidationErrors } from '../../helpers/response-helpers.spec';
 
 describe('SignUpComponent', () => {
     let component: SignUpComponent;
     let fixture: ComponentFixture<SignUpComponent>;
     const routerSpy = jasmine.createSpyObj(Router.name, ['navigateByUrl']);
     const successResponse = {user: {id: 1, name: 'Вася', email: 'test@test.ru'}};
-    const validationErrorResponse = {
-        error: {
-            errors: {
-                name: ['name error'],
-                email: ['email error'],
-                password: ['password error'],
-            }
-        }
-    };
+    const validationErrors = makeValidationErrors({
+        name: ['name error'],
+        email: ['email error'],
+        password: ['password error'],
+    });
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
@@ -42,50 +39,81 @@ describe('SignUpComponent', () => {
         fixture.detectChanges();
     });
 
-    it('После авторизации пользователя перенаправляет на главную страницу', () => {
-        const authService: AuthServiceMock = TestBed.get(AuthService);
-        const navigateByUrlSpy = routerSpy.navigateByUrl as jasmine.Spy;
+    describe('Component behavior', () => {
+        it('should redirect to main page after sign up', () => {
+            const authService: AuthServiceMock = TestBed.get(AuthService);
+            const navigateByUrlSpy = routerSpy.navigateByUrl as jasmine.Spy;
 
-        component.register();
+            component.signUp();
+            authService.signUp$.next(successResponse);
 
-        authService.authResponse$.next(successResponse);
-        expect(navigateByUrlSpy.calls.count()).toBe(1);
-        expect(navigateByUrlSpy.calls.first().args[0]).toBe('');
+            expect(navigateByUrlSpy.calls.count()).toBe(1, 'user is not have been redirected exactly one time');
+            expect(navigateByUrlSpy.calls.first().args[0]).toBe('/', 'redirect uri is not main page');
+        });
+
+        it('should disable form before authentication request', () => {
+            component.signUp();
+            expect(component.form.disabled).toBeTruthy('form still enabled after request have been sent');
+        });
+
+        it('should enable form after authenticate', () => {
+            const authService: AuthServiceMock = TestBed.get(AuthService);
+
+            component.signUp();
+            authService.signUp$.next(successResponse);
+
+            expect(component.form.enabled).toBeTruthy('form still disabled after receive authentication response');
+        });
+
+        it('should enable form after receive errors', () => {
+            const authService: AuthServiceMock = TestBed.get(AuthService);
+
+            component.signUp();
+            authService.signUp$.error(validationErrors);
+
+            expect(component.form.enabled).toBeTruthy('form still disabled after receive validation errors');
+        });
     });
 
-    it('При ошибках валидации в форме появляются ошибки', () => {
-        const authService: AuthServiceMock = TestBed.get(AuthService);
-        component.register();
+    describe('Error handling', () => {
+        it('should set validation errors to form controls', () => {
+            const authService: AuthServiceMock = TestBed.get(AuthService);
 
-        authService.authResponse$.error(validationErrorResponse);
+            component.signUp();
+            authService.signUp$.error(validationErrors);
 
-        expect(component.form.get('email').errors).toEqual(['email error']);
-        expect(component.form.get('name').errors).toEqual(['name error']);
-        expect(component.form.get('password').errors).toEqual(['password error']);
-    });
+            expect(component.form.get('email').errors).toEqual(['email error']);
+            expect(component.form.get('name').errors).toEqual(['name error']);
+            expect(component.form.get('password').errors).toEqual(['password error']);
+        });
 
-    it('При внутренних ошибках сервера ошибки не происходит', () => {
-        const authService: AuthServiceMock = TestBed.get(AuthService);
-        component.register();
+        it('should handle validation errors with unknown fields', () => {
+            const authService: AuthServiceMock = TestBed.get(AuthService);
+            const error = validationErrors;
+            error.error.errors['unknown'] = 'some error';
 
-        authService.authResponse$.error({error: 'Internal server error'});
-    });
+            component.signUp();
+            authService.signUp$.error(error);
+        });
 
-    it('Если вернулась ошибка валидации по полю, которого нет в форме, ошибки не происходит', () => {
-        const authService: AuthServiceMock = TestBed.get(AuthService);
-        component.register();
+        it('should handle internal server errors', () => {
+            const authService: AuthServiceMock = TestBed.get(AuthService);
+            component.signUp();
+            authService.signUp$.error({error: 'Internal server error'});
+        });
 
-        const error = validationErrorResponse;
-        error.error.errors['other'] = 'some error';
-
-        authService.authResponse$.error(error);
+        it('should handle empty error response', () => {
+            const authService: AuthServiceMock = TestBed.get(AuthService);
+            component.signUp();
+            authService.signUp$.error({});
+        });
     });
 });
 
 class AuthServiceMock {
-    authResponse$: Subject<AuthResponse> = new Subject<AuthResponse>();
+    signUp$: Subject<AuthResponse> = new Subject<AuthResponse>();
 
-    register(registerForm: RegisterForm): Observable<AuthResponse> {
-        return this.authResponse$.asObservable();
+    register(registerForm: SignUpForm): Observable<AuthResponse> {
+        return this.signUp$.asObservable();
     }
 }
