@@ -1,0 +1,33 @@
+.drop-zone {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dotted #eee;
+    flex-direction: column;
+    text-align: center;
+}
+
+.drop-zone mat-icon, .drop-zone mat-progress-bar {
+    display: block;
+    font-size: 2em;
+}
+
+.drop-zone.drag-over {
+    border-color: #888;
+}
+
+.drop-zone mat-progress-bar {
+    margin: 20px;
+    height: 20px;
+}
+
+.video-form {
+    display: flex;
+}
+
+.text-fields {
+    margin-left: 20px;
+}
+
