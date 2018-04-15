@@ -1,0 +1,13 @@
+paths:
+  api/auth/user:
+    get:
+      tags: ["Auth"]
+      summary: "Возвращает текущего пользователя"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: "../../models/user.yml#/components/schemas/User"
