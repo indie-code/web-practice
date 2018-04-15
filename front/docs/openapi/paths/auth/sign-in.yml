@@ -1,0 +1,51 @@
+paths:
+  api/auth/sign-in:
+    post:
+      summary: "Выдаёт JWT токен"
+      tags: ["Auth"]
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  required: true
+                  example: "test@test.com"
+                password:
+                  type: string
+                  required: true
+                  example: "123qweQWE"
+      responses:
+        200:
+          headers:
+            Api-Token:
+              $ref: "../../api.yml#/components/headers/Api-Token"
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: "../../models/user.yml#/components/schemas/User"
+        422:
+          content:
+            application/json:
+              schema:
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      email:
+                        type: array
+                        items:
+                          type: string
+                          example: "Не указан email"
+                      password:
+                        type: array
+                        items:
+                          type: string
+                          example: "Не указан пароль"

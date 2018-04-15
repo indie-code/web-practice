@@ -27,6 +27,8 @@ services:
     volumes:
       - ./api:/var/www/html
       - ./front/nginx/www.conf:/etc/nginx/conf.d/default.conf
+      - ./front/docs:/var/www/html/docs
+      - ./front/node_modules/redoc/bundles:/var/www/html/docs/redoc/bundles
     working_dir: /var/www/html
     ports:
       - 8080:80

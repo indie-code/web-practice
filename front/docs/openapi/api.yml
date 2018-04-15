@@ -1,0 +1,31 @@
+openapi: 3.0.1
+
+info:
+  version: 1.0.0
+  title: "Web practice API"
+
+servers:
+  - url: http://web-practice.local:8080/api
+    description: "Локальный сервер"
+
+paths:
+  /auth/sign-in:
+    $ref: "./paths/auth/sign-in.yml#/paths/api~1auth~1sign-in"
+  /auth/user:
+    $ref: "./paths/auth/user.yml#/paths/api~1auth~1user"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  headers:
+    Api-Token:
+      schema:
+        type: string
+        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG8iLCJpYXQiOjE1MTYyMzkwMjJ9.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
+
+security:
+  - bearerAuth: []
