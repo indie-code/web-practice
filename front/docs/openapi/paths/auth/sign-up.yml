@@ -1,7 +1,8 @@
 paths:
-  auth/sign-in:
+  auth/sign-up:
     post:
-      summary: 'Получение JWT токена'
+      summary: 'Регистрация пользователя'
+      description: 'Регистрирует пользователя и выдаёт JWT токен'
       tags: ['Auth']
       security: []
       requestBody:
@@ -14,10 +15,20 @@ paths:
                   required: true
                   description: 'Email пользователя'
                   example: 'test@test.com'
+                name:
+                  type: string
+                  required: true
+                  description: 'Имя пользователя'
+                  example: 'Иванов Иван Иванович'
                 password:
                   type: string
                   required: true
                   description: 'Пароль пользователя'
+                  example: '123qweQWE'
+                password_confirmation:
+                  type: string
+                  required: true
+                  description: 'Подтверждения пароля'
                   example: '123qweQWE'
       responses:
         200:
@@ -46,6 +57,11 @@ paths:
                         items:
                           type: string
                           example: 'Не указан email'
+                      name:
+                        type: array
+                        items:
+                          type: string
+                          example: 'Не указано имя'
                       password:
                         type: array
                         items:

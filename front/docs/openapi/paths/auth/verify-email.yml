@@ -1,0 +1,59 @@
+paths:
+  auth/verify-email/{user}:
+    get:
+      summary: 'Подтверждение email-адреса'
+      description: 'Подтверждает email пользователя и выдаёт JWT токен'
+      parameters:
+        - in: path
+          name: user
+          required: true
+          schema:
+            type: string
+          description: 'id пользователя'
+          example: 1
+        - in: query
+          name: signature
+          required: true
+          schema:
+            type: string
+          description: 'Токен подтверждения email'
+          example: '74e23426f6f60277fa4918e6c0378378ff2cbd69c23afec8c0b7256986688bd3'
+        - in: query
+          name: expires
+          required: true
+          schema:
+            type: int64
+          description: 'Время окончания действия токена в формате timestamp'
+          example: 1523914756
+      tags: ['Auth']
+      security: []
+      responses:
+        200:
+          headers:
+            Api-Token:
+              $ref: '../../api.yml#/components/headers/Api-Token'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '../../models/user.yml#/components/schemas/User'
+        401:
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid signature'
+                  type:
+                    type: string
+                    example: 'InvalidSignatureException'
+                  errors:
+                    type: array
+                    default: []
+                    items:
+                      type: string
