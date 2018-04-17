@@ -1,8 +1,9 @@
 paths:
-  api/auth/user:
+  auth/user:
     get:
-      tags: ["Auth"]
-      summary: "Возвращает текущего пользователя"
+      tags: ['Auth']
+      summary: 'Авторизованный пользователь'
+      description: 'Возвращает информацию об авторизованном пользователе'
       responses:
         200:
           content:
@@ -10,4 +11,25 @@ paths:
               schema:
                 properties:
                   data:
-                    $ref: "../../models/user.yml#/components/schemas/User"
+                    $ref: '../../models/user.yml#/components/schemas/User'
+        401:
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: 'Пользователь не авторизован'
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - tymon.jwt.absent
+                      - tymon.jwt.expired
+                      - tymon.jwt.invalid
+                      - tymon.jwt.user_not_found
+                      example: 'tymon.jwt.expired'
+                  type:
+                    type: string
+                    enum: ['JwtAuthFailedException']

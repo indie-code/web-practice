@@ -28,16 +28,9 @@ class AuthController extends Controller
 
         $user->save();
 
-        $user->notify(new VerifyEmailNotification($user));
+        $user->notify(new VerifyEmailNotification());
 
         return $this->authenticated($request, $user);
-    }
-
-    protected function authenticated(Request $request, $user)
-    {
-        return (new AuthResource($user))
-            ->response()
-            ->header('Api-Token', JWTAuth::fromUser($user));
     }
 
     public function signIn(Request $request)
@@ -56,11 +49,18 @@ class AuthController extends Controller
         return new AuthResource(auth()->user());
     }
 
-    public function verify(User $user)
+    public function verify(Request $request, User $user)
     {
         $user->verified = true;
         $user->save();
 
-        return redirect('/');
+        return $this->authenticated($request, $user);
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        return (new AuthResource($user))
+            ->response()
+            ->header('Api-Token', JWTAuth::fromUser($user));
     }
 }

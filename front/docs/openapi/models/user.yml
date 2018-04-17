@@ -5,10 +5,13 @@ components:
       properties:
         id:
           type: integer
+          description: 'id пользователя'
           example: 1
         name:
           type: string
-          example: "Иванов Иван"
+          description: 'Имя пользователя'
+          example: 'Иванов Иван'
         email:
           type: string
-          example: "test@test.com"
+          description: 'Email пользователя'
+          example: 'test@test.com'

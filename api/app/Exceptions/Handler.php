@@ -51,4 +51,27 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
+
+    /**
+     * Convert the given exception to an array.
+     *
+     * @param  \Exception  $e
+     * @return array
+     */
+    protected function convertExceptionToArray(Exception $e)
+    {
+        $json = [
+            'message' => $e->getMessage(),
+            'type' => class_basename($e),
+            'errors' => []
+        ];
+
+        return config('app.debug') ? $json + [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->map(function ($trace) {
+                return array_except($trace, ['args']);
+            })->all(),
+        ] : $json;
+    }
 }
