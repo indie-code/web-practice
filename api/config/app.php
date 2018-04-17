@@ -151,6 +151,8 @@ return [
 
 
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        Pbmedia\LaravelFFMpeg\FFMpegServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -215,6 +217,7 @@ return [
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'FFMpeg' => Pbmedia\LaravelFFMpeg\FFMpegFacade::class
     ],
 
 ];

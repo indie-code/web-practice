@@ -4,10 +4,12 @@
 namespace Tests\Feature\VideoFilesControllerTest;
 
 
+use App\Attachment;
+use App\Components\FFMpegService;
 use App\User;
-use function factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Mockery;
 use Tests\TestCase;
 
 class StoreTest extends TestCase
@@ -26,31 +28,41 @@ class StoreTest extends TestCase
     /**
      * @test
      */
-     public function attachments_store()
-     {
+    public function attachments_store()
+    {
         Storage::fake('videos');
+
+        $ffmpegService = Mockery::mock(FFMpegService::class);
+        $thumbnails = factory(Attachment::class, 3)->create();
+        $this->app->instance(FFMpegService::class, $ffmpegService);
+        $ffmpegService->shouldReceive('makeThumbnails')
+            ->once()
+            ->andReturn($thumbnails);
 
         $response = $this
             ->loginAs()
             ->postJson(route('videos.store'), ['file' => $this->file])
             ->assertSuccessful();
+        ;
 
         $this->assertNotNull($response->json('data.id'));
-        $this->assertEquals($this->file->hashName(), $response->json('data.file_name'));
+        $this->assertEquals(url('/videos/' . $this->file->hashName()), $response->json('data.url'));
+
+        $this->assertCount(3, $response->json('data.thumbnails'));
 
         Storage::disk('videos')->assertExists($this->file->hashName());
-     }
+    }
 
     /**
      * @test
      */
-     public function not_allowed_store()
-     {
-         $user = factory(User::class)->create(['verified' => false]);
+    public function not_allowed_store()
+    {
+        $user = factory(User::class)->create(['verified' => false]);
 
-         $this
-             ->loginAs($user)
-             ->postJson(route('videos.store'), ['file' => $this->file])
-             ->assertForbidden();
-     }
+        $this
+            ->loginAs($user)
+            ->postJson(route('videos.store'), ['file' => $this->file])
+            ->assertForbidden();
+    }
 }

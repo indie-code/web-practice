@@ -16,7 +16,8 @@ class AttachmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'file_name' => $this->file_name,
+            'url' => $this->url,
+            'thumbnails' => AttachmentResource::collection($this->thumbnails),
         ];
     }
 }
