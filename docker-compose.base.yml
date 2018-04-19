@@ -17,9 +17,9 @@ services:
     build:
       context: ./api
       dockerfile: ./docker/php/Dockerfile
-    restart: always
     volumes:
       - ./api:/var/www/html
+      - ./api/docker/php/php.ini:/usr/local/etc/php/php.ini
       - ~/.composer:/root/.composer
 
   nginx:

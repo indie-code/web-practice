@@ -81,9 +81,7 @@ class SignUpTest extends TestCase
 
         $user = User::whereEmail('test.test@test.ru')->first();
 
-        Notification::assertSentTo($user, VerifyEmailNotification::class, function ($notification) use ($user) {
-            return $notification->user->id === $user->id;
-        });
+        Notification::assertSentTo($user, VerifyEmailNotification::class);
     }
 
     /**

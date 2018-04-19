@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Attachment;
+use App\Components\FFMpegService;
 use App\Exceptions\VideoNotFoundException;
 use App\Http\Resources\AttachmentResource;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Storage;
 
 class VideoFilesController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, FFMpegService $ffmpegService)
     {
         $this->authorize('upload', Attachment::class);
         /**
@@ -21,10 +22,21 @@ class VideoFilesController extends Controller
          */
         $file = $request->file;
         $file->store('', ['disk' => 'videos']);
+        $fileName = $file->hashName();
+
+        /**
+         * @var $attachment Attachment
+         */
         $attachment = auth()->user()->attachments()->create([
-            'file_name' => $file->hashName(),
+            'file_name' => $fileName,
             'mime_type' => $file->getClientMimeType(),
+            'url' => url('videos/' . $fileName),
         ]);
+
+        $thumbName = mb_substr($fileName, 0, - strlen($file->getClientOriginalExtension()) - 1);
+        $thumbnails = $ffmpegService->makeThumbnails($fileName, $thumbName);
+
+        $attachment->thumbnails()->saveMany($thumbnails);
 
         return new AttachmentResource($attachment);
     }

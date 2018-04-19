@@ -4,6 +4,8 @@ ADD ./docker/php/composer-install.sh /tmp/composer-install.sh
 
 RUN sh /tmp/composer-install.sh rm sh /tmp/composer-install.sh
 
-RUN apk add --no-cache postgresql-dev && docker-php-ext-install pdo_pgsql
+RUN apk add --no-cache postgresql-dev ffmpeg && docker-php-ext-install pdo_pgsql
+
+ADD ./docker/php/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /var/www/html

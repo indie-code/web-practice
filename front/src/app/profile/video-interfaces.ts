@@ -1,10 +1,12 @@
 export interface Attachment {
-    id: number;
+  id: number;
+  url: string;
+  thumbnails: Attachment[];
 }
 
 export interface Video {
-    id: number;
-    title: string;
-    description: string;
-    attachment_id: number;
+  id: number;
+  title: string;
+  description: string;
+  attachment_id: number;
 }

@@ -9,5 +9,6 @@ $factory->define(Attachment::class, function (Faker $faker) {
         'user_id' => factory(User::class)->lazy(['verified' => true]),
         'file_name' => $faker->word,
         'mime_type' => $faker->mimeType,
+        'url' => $faker->url,
     ];
 });
