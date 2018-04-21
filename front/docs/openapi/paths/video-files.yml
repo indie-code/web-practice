@@ -1,0 +1,21 @@
+paths:
+  video-files:
+    post:
+      tags: ['Profile', 'Video']
+      summary: 'Загрузка файла видео'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '../models/attachment.yml#/components/schemas/VideoAttachment'
+        403:
+          $ref: '../responses/errors.yml#/components/responses/NotAuthorizedError'

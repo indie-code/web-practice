@@ -1,0 +1,14 @@
+components:
+  schemas:
+    Video:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: integer
+          example: 'Что нового в Laravel 5.6?'
+        description:
+          type: integer
+          example: 'Новые возможности Laravel 5.6'

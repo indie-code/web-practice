@@ -17,6 +17,12 @@ paths:
     $ref: './paths/auth/verify-email.yml#/paths/auth~1verify-email~1{user}'
   /auth/user:
     $ref: './paths/auth/user.yml#/paths/auth~1user'
+  /profile/videos:
+    $ref: './paths/profile/videos.yml#/paths/profile~1videos'
+  /profile/videos/{video}:
+    $ref: './paths/profile/videos.yml#/paths/profile~1videos~1{video}'
+  /video-files:
+    $ref: './paths/video-files.yml#/paths/video-files'
 
 components:
   securitySchemes:
