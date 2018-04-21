@@ -30,13 +30,14 @@ class VideoFilesController extends Controller
         $attachment = auth()->user()->attachments()->create([
             'file_name' => $fileName,
             'mime_type' => $file->getClientMimeType(),
-            'url' => url('videos/' . $fileName),
+            'url' => route('video-files.show', $fileName),
         ]);
 
         $thumbName = mb_substr($fileName, 0, - strlen($file->getClientOriginalExtension()) - 1);
         $thumbnails = $ffmpegService->makeThumbnails($fileName, $thumbName);
 
         $attachment->thumbnails()->saveMany($thumbnails);
+        $attachment->load('thumbnails');
 
         return new AttachmentResource($attachment);
     }

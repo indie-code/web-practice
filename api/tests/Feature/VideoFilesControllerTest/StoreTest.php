@@ -41,12 +41,11 @@ class StoreTest extends TestCase
 
         $response = $this
             ->loginAs()
-            ->postJson(route('videos.store'), ['file' => $this->file])
+            ->postJson(route('video-files.store'), ['file' => $this->file])
             ->assertSuccessful();
-        ;
 
         $this->assertNotNull($response->json('data.id'));
-        $this->assertEquals(url('/videos/' . $this->file->hashName()), $response->json('data.url'));
+        $this->assertEquals(route('video-files.show', $this->file->hashName()), $response->json('data.url'));
 
         $this->assertCount(3, $response->json('data.thumbnails'));
 
@@ -62,7 +61,7 @@ class StoreTest extends TestCase
 
         $this
             ->loginAs($user)
-            ->postJson(route('videos.store'), ['file' => $this->file])
+            ->postJson(route('video-files.store'), ['file' => $this->file])
             ->assertForbidden();
     }
 }

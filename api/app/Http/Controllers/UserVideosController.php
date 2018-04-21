@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Attachment;
 use App\Http\Requests\VideosStoreRequest;
+use App\Http\Resources\VideoFullResource;
 use App\Http\Resources\VideoResource;
 use App\Video;
 use Auth;
@@ -35,11 +36,6 @@ class UserVideosController extends Controller
     }
 
     public function update()
-    {
-        //
-    }
-
-    public function show()
     {
         //
     }

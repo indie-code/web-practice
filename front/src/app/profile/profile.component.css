@@ -1,7 +1,5 @@
-.profile {
-    display: flex;
-}
-
-.sub-profile-component {
-    flex-grow: 1;
+:host {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
 }

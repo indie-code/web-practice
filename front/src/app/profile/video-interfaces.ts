@@ -9,4 +9,5 @@ export interface Video {
   title: string;
   description: string;
   attachment_id: number;
+  attachment: Attachment;
 }

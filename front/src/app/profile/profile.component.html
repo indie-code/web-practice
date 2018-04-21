@@ -1,14 +1,12 @@
-<div class="profile">
-    <mat-card>
-        <mat-nav-list role="list">
-            <mat-list-item role="listitem">
-                <a matLine i18n="Мои видео |Меню мои видео @@my-videos"
-                   routerLink="/profile/videos"
-                >Мои видео</a>
-            </mat-list-item>
-        </mat-nav-list>
-    </mat-card>
-    <mat-card class="sub-profile-component">
-        <router-outlet></router-outlet>
-    </mat-card>
-</div>
+<mat-card>
+  <mat-nav-list role="list">
+    <mat-list-item role="listitem">
+      <a matLine i18n="Мои видео |Меню мои видео @@my-videos"
+         routerLink="/profile/videos"
+      >Мои видео</a>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-card>
+<mat-card>
+  <router-outlet></router-outlet>
+</mat-card>

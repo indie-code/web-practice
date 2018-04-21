@@ -1,2 +1,6 @@
 <a i18n="Профиль|Кнопка создать видео" routerLink="/profile/videos-create">Создать Видео</a>
-<router-outlet></router-outlet>
+<mat-list>
+  <mat-list-item *ngFor="let video of videos$ | async" >
+    <a [routerLink]="['/profile/videos', video.id]">{{ video.title }}</a>
+  </mat-list-item>
+</mat-list>

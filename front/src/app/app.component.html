@@ -1,10 +1,10 @@
-<mat-toolbar color="primary">
-    <a mat-button routerLink="">
-        <mat-icon>home</mat-icon> Web practice
-    </a>
-
-    <span class="flex-grow"></span>
-
-    <app-profile-menu></app-profile-menu>
+<mat-toolbar class="top-menu" color="primary">
+  <a mat-button routerLink="">
+    <mat-icon>home</mat-icon> Web practice
+  </a>
+  <span class="flex-grow"></span>
+  <app-profile-menu></app-profile-menu>
 </mat-toolbar>
-<router-outlet></router-outlet>
+<div>
+  <router-outlet></router-outlet>
+</div>
