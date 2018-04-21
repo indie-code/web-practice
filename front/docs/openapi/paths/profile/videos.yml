@@ -1,0 +1,110 @@
+paths:
+  profile/videos:
+    get:
+      summary: 'Список видео пользователя'
+      tags: ['Video', 'Profile']
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '../../models/video.yml#/components/schemas/Video'
+        403:
+          $ref: '../../responses/errors.yml#/components/responses/NotAuthorizedError'
+    post:
+      summary: 'Сохранение видео'
+      tags: ['Video', 'Profile']
+      requestBody:
+        $ref: '#/components/requestBodies/VideoRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/VideoResponse'
+        422:
+          $ref: '#/components/responses/VideoValidationErrorsResponse'
+        403:
+          $ref: '../../responses/errors.yml#/components/responses/NotAuthorizedError'
+  profile/videos/{video}:
+    parameters:
+      - in: path
+        name: video
+        example: 1
+        description: 'id видео'
+        required: true
+        schema:
+          type: integer
+    put:
+      summary: 'Изменение видео'
+      tags: ['Video', 'Profile']
+      requestBody:
+        $ref: '#/components/requestBodies/VideoRequest'
+      responses:
+        200:
+          $ref: '#/components/responses/VideoResponse'
+        422:
+          $ref: '#/components/responses/VideoValidationErrorsResponse'
+        403:
+          $ref: '../../responses/errors.yml#/components/responses/NotAuthorizedError'
+    get:
+      summary: 'Получение видео'
+      tags: ['Video', 'Profile']
+      responses:
+        200:
+          $ref: '#/components/responses/VideoResponse'
+        403:
+          $ref: '../../responses/errors.yml#/components/responses/NotAuthorizedError'
+
+components:
+  requestBodies:
+    VideoRequest:
+      content:
+        application/json:
+          schema:
+            properties:
+              title:
+                type: string
+                maximum: 255
+                required: true
+                description: 'Название видео'
+              description:
+                type: string
+                description: 'Описание видео'
+              attachment_id:
+                type: integer
+                description: 'id файла видео'
+  responses:
+    VideoResponse:
+      content:
+        application/json:
+          schema:
+            properties:
+              data:
+                $ref: '../../models/video.yml#/components/schemas/Video'
+    VideoValidationErrorsResponse:
+      content:
+        application/json:
+          schema:
+            properties:
+              errors:
+                type: object
+                properties:
+                  title:
+                    type: array
+                    items:
+                      type: string
+                      example: 'Максимальная длина названия видео - 255 символов'
+                  attachment_id:
+                    type: array
+                    items:
+                      type: string
+                      example: 'Файл не существует'
+              message:
+                type: string
+                example: 'Переданы некорректные данные'
+              type:
+                type: string
+                enum: ['ValidationException']

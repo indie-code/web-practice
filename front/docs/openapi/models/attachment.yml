@@ -1,0 +1,25 @@
+components:
+  schemas:
+    VideoAttachment:
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: 'id видео'
+        url:
+          type: string
+          example: 'https://web-practice.ru/videos/sample/mp4'
+          description: 'URL для просмотра видео'
+        thumbnails:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+                description: 'id файла предпросмотра'
+              url:
+                type: string
+                example: 'https://web-practice.ru/videos/sample/mp4'
+                description: 'URL файла предпросмотра'

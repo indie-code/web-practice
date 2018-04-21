@@ -1,0 +1,22 @@
+components:
+  responses:
+    NotAuthorizedError:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                description: 'Технические ошибки'
+                items:
+                  type: string
+                  example: 'Unauthorized'
+              message:
+                type: string
+                description: 'Сообщение для пользователя'
+                example: 'У вас нет доступа к разделу'
+              type:
+                type: string
+                description: 'Тип ошибки'
+                enum: ['UnauthorizedException']
