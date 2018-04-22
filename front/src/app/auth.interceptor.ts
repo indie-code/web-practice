@@ -33,7 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 (error: HttpErrorResponse) => {
                     if (error.status === 401) {
                         this.tokenStorage.deleteToken();
-                        this.router.navigateByUrl('/sign-in');
+                        this.router.navigateByUrl('/auth');
                     }
                 },
             ),

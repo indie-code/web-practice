@@ -84,7 +84,7 @@ describe('AuthInterceptor', () => {
                 const navigateSpy = routerSpy.navigateByUrl as jasmine.Spy;
                 expect(tokenService.testToken).toBeFalsy();
                 expect(navigateSpy.calls.count()).toBe(1);
-                expect(navigateSpy.calls.first().args[0]).toBe('/sign-in');
+                expect(navigateSpy.calls.first().args[0]).toBe('/auth');
             },
         );
 
