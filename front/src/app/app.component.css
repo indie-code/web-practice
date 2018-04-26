@@ -1,10 +1,10 @@
 :host {
-    flex-grow: 1;
-    flex-direction: column;
-    justify-content: stretch;
-    display: flex;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
-.flex-grow {
-    flex-grow: 1;
+.top-menu {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
 }

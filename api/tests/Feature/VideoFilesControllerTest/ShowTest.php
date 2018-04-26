@@ -48,7 +48,7 @@ class ShowTest extends TestCase
         Storage::disk('videos')->put($this->file->hashName(), $this->file);
 
         $response = $this
-            ->get(route('videos.show', [
+            ->get(route('video-files.show', [
                 'video' => $this->file->hashName(),
                 'api-token' => $this->token,
             ]));
@@ -63,7 +63,7 @@ class ShowTest extends TestCase
      */
     public function not_found_response()
     {
-        $response = $this->get(route('videos.show', [
+        $response = $this->get(route('video-files.show', [
             'video' => 'fake.mp4',
             'api-token' => $this->token,
         ]));
