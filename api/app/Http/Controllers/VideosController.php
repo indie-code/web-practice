@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Attachment;
-use App\Http\Requests\VideosStoreRequest;
+use App\Http\Requests\VideosSaveRequest;
 use App\Http\Resources\VideoFullResource;
 use App\Http\Resources\VideoResource;
 use App\Video;
@@ -16,7 +16,7 @@ class VideosController extends Controller
     public function show(Video $video)
     {
         $this->authorize('show', $video);
-        $video->load('attachment');
+        $video->load(['attachment.thumbnails', 'preview']);
         return new VideoResource($video);
     }
 }

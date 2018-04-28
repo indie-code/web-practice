@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property int $user_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Video whereUserId($value)
+ * @property int|null $preview_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Video wherePreviewId($value)
  */
 class Video extends Model
 {
@@ -31,6 +33,11 @@ class Video extends Model
     public function attachment()
     {
         return $this->morphOne(Attachment::class, 'object');
+    }
+
+    public function preview()
+    {
+        return $this->belongsTo(Attachment::class);
     }
 }
 

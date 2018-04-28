@@ -1,0 +1,40 @@
+<form (submit)="onSubmit()" class="video-form" [formGroup]="videoForm">
+  <div class="half-screen">
+    <mat-form-field>
+      <input matInput placeholder="Название" formControlName="title"/>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matTextareaAutosize maxlength="255" matInput placeholder="Описание" formControlName="description"></textarea>
+    </mat-form-field>
+    <div
+      ngFileDrop
+      [class.drag-over]="dragOver"
+      (uploadOutput)="onUploadOutput($event)"
+      class="drop-zone"
+      [ngStyle]="{'background-image': preview ? 'url(' + preview.url + ')' : 'none'}"
+    >
+      <ng-container *ngIf="! preview">
+        <ng-container *ngIf="! uploading">
+          <mat-icon>file_upload</mat-icon>
+          Перенесите видео сюда
+        </ng-container>
+        <ng-container *ngIf="uploading">
+          <div class="load-text">
+            Загрузка... {{ progress | percent }}
+          </div>
+          <mat-progress-bar [value]="progress" mode="determinate"></mat-progress-bar>
+        </ng-container>
+      </ng-container>
+
+    </div>
+    <div *ngIf="attachment" class="video-previews">
+      <img
+        (click)="changePreview(preview)"
+        *ngFor="let preview of attachment.thumbnails"
+        [src]="preview.url"/>
+    </div>
+    <div>
+      <button [disabled]="! videoForm.valid || ! videoForm.dirty" mat-raised-button color="primary" >Сохранить</button>
+    </div>
+  </div>
+</form>

@@ -19,6 +19,7 @@ class VideoResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'attachment' => new AttachmentResource($this->whenLoaded('attachment')),
+            'preview' => new AttachmentResource($this->whenLoaded('preview')),
         ];
     }
 }
