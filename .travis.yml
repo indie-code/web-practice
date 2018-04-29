@@ -1,0 +1,50 @@
+stages:
+  - code-quality
+  - testing
+
+jobs:
+  include:
+    - language: generic
+      stage: testing
+      sudo: required
+      services:
+        - docker
+      cache:
+        directories:
+          - $HOME/.composer
+      before_script:
+        - ./develop.sh up -d db-test
+        - ./develop.sh build php
+        - ./develop.sh run --rm php composer install
+        - ./develop.sh run --rm php php artisan migrate --force --database=test --seed
+      script:
+        - ./develop.sh run --rm php php vendor/bin/phpunit
+
+    - stage: testing
+      language: node_js
+      sudo: required
+      node_js:
+        - "8"
+      addons:
+        chrome: stable
+      cache:
+        directories:
+          - $HOME/.npm
+      before_script:
+        - cd front
+        - npm install
+      script:
+        - node_modules/.bin/ng test --single-run --browsers=ChromeHeadless --progress=false
+
+    - stage: code-quality
+      language: node_js
+      node_js:
+        - "8"
+      cache:
+        directories:
+          - $HOME/.npm
+      before_script:
+        - cd front
+        - npm install
+      script:
+        - node_modules/.bin/ng lint

@@ -34,7 +34,7 @@ import {AuthService} from './services/auth.service';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    
+
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -42,14 +42,14 @@ import {AuthService} from './services/auth.service';
     MatDividerModule,
     MatProgressBarModule,
     MatCardModule,
-    
+
     RouterModule.forRoot(routes),
   ],
   providers: [
     ApiService,
-    
+
     AuthService,
-    
+
     TokenStorageService,
     {
       provide: HTTP_INTERCEPTORS,
