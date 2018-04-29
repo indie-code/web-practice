@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { TokenStorageService } from './token-storage.service';
-import { filter, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 

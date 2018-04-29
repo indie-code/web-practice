@@ -67,6 +67,19 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'test' => [
+            'driver' => 'pgsql',
+            'host' => 'db-test',
+            'port' => 5432,
+            'database' => 'test',
+            'username' => 'test',
+            'password' => 'test',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST', 'localhost'),

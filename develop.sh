@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-. ./.docker-env
+if [ -f ".docker-env" ]; then
+    . ./.docker-env
+fi
 
 export REDIS_PASSWORD=${REDIS_PASSWORD:-app}
 

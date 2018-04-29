@@ -12,18 +12,18 @@ import {Attachment} from '../video-interfaces';
   styleUrls: ['./videos-create.component.css'],
 })
 export class VideosCreateComponent implements OnInit {
-  
+
   videoForm: FormGroup;
-  
+
   progress: number;
   uploading = false;
   dragOver = false;
   attachment: Attachment;
   preview: Attachment;
-  
+
   constructor(private fb: FormBuilder, private videosService: VideosService) {
   }
-  
+
   ngOnInit() {
     this.videoForm = this.fb.group({
       title: '',
@@ -32,9 +32,9 @@ export class VideosCreateComponent implements OnInit {
       preview_id: undefined,
     });
   }
-  
+
   onUploadOutput(output: UploadOutput) {
-    
+
     switch (output.type) {
       case 'dragOver':
         this.dragOver = true;
@@ -47,15 +47,15 @@ export class VideosCreateComponent implements OnInit {
         break;
     }
   }
-  
+
   showProgress(event: HttpProgressEvent) {
     this.progress = event.loaded / event.total;
   }
-  
+
   changePreview(thumbnail: Attachment) {
     this.preview = thumbnail;
   }
-  
+
   private uploadFile(file: File) {
     this.uploading = true;
     this.videosService.upload(file)

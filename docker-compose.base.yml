@@ -13,6 +13,15 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  db-test:
+    image: postgres:10.3-alpine
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: test
+      POSTGRES_DB: test
+    volumes:
+      - db_test_data:/var/lib/postgresql/data
+
   php:
     build:
       context: ./api
@@ -39,3 +48,4 @@ services:
 
 volumes:
   db_data:
+  db_test_data:
