@@ -25,6 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereUserId($value)
  * @mixin \Eloquent
  * @property-read \App\User $user
+ * @property string $url
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Attachment[] $thumbnails
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereUrl($value)
  */
 class Attachment extends Model
 {

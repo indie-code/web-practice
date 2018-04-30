@@ -6,7 +6,7 @@ use App\Attachment;
 use App\Video;
 use Illuminate\Foundation\Http\FormRequest;
 
-class VideosStoreRequest extends FormRequest
+class VideosSaveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,7 +37,8 @@ class VideosStoreRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'attachment_id' => 'exists:attachments,id',
+            'attachment_id' => 'nullable|exists:attachments,id',
+            'preview_id' => 'nullable|exists:attachments,id',
         ];
     }
 }

@@ -4,6 +4,7 @@ import {ProfileComponent} from './profile.component';
 import {RouterModule, Routes} from '@angular/router';
 import {VideosComponent} from './videos/videos.component';
 import {
+  MatButtonModule,
   MatCardModule,
   MatIconModule,
   MatInputModule,
@@ -15,6 +16,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {NgUploaderModule} from 'ngx-uploader';
 import {VideosService} from './videos.service';
 import {VideoViewComponent} from './video-view/video-view.component';
+import {VideoFormComponent} from './video-form/video-form.component';
+import {VideosEditComponent} from './videos-edit/videos-edit.component';
 
 const routes: Routes = [
   {
@@ -32,6 +35,10 @@ const routes: Routes = [
       {
         path: 'videos-create',
         component: VideosCreateComponent,
+      },
+      {
+        path: 'videos-edit/:id',
+        component: VideosEditComponent,
       }
     ],
   }
@@ -48,8 +55,9 @@ const routes: Routes = [
     MatIconModule,
     NgUploaderModule,
     MatProgressBarModule,
+    MatButtonModule,
   ],
-  declarations: [ProfileComponent, VideosComponent, VideosCreateComponent, VideoViewComponent],
+  declarations: [ProfileComponent, VideosComponent, VideosCreateComponent, VideoViewComponent, VideoFormComponent, VideosEditComponent],
   providers: [VideosService],
 })
 export class ProfileModule {

@@ -46,8 +46,12 @@ class VideosStoreTest extends TestCase
     {
         /** @var Attachment $attachment */
         $attachment = factory(Attachment::class)->create();
+        $preview = factory(Attachment::class)->create();
 
-        $params = array_merge($this->validParams, ['attachment_id' => $attachment->id]);
+        $params = array_merge($this->validParams, [
+            'attachment_id' => $attachment->id,
+            'preview_id' => $preview->id,
+        ]);
         $response = $this->loginAs($attachment->user)
             ->postJson(route('profile.videos.store'), $params);
 
@@ -59,6 +63,8 @@ class VideosStoreTest extends TestCase
         $video = Video::find($id);
         $this->assertNotNull($video->attachment);
         $this->assertEquals($attachment->id, $video->attachment->id);
+        $this->assertNotNull($video->preview);
+        $this->assertEquals($preview->id, $video->preview->id);
     }
 
     /**
@@ -69,9 +75,13 @@ class VideosStoreTest extends TestCase
     public function validation()
     {
         $this->loginAs()
-            ->postJson(route('profile.videos.store'), ['title' => '', 'attachment_id' => 999])
+            ->postJson(route('profile.videos.store'), [
+                'title' => '',
+                'attachment_id' => 999,
+                'preview_id' => 999,
+                ])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['title', 'attachment_id']);
+            ->assertJsonValidationErrors(['title', 'attachment_id', 'preview_id']);
     }
 
     /**

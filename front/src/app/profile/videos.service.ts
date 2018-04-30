@@ -24,5 +24,13 @@ export class VideosService {
   video(id: number): Observable<Video> {
     return this.api.get('videos/' + id).pipe(map(response => response.data));
   }
+
+  store(video: Video) {
+    return this.api.post('profile/videos', video).pipe(map(response => response.data));
+  }
+
+  update(videoId: number, video: Video) {
+    return this.api.put(`profile/videos/${videoId}`, video).pipe(map(response => response.data));
+  }
 }
 
