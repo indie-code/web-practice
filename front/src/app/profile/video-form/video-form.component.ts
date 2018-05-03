@@ -16,7 +16,7 @@ export class VideoFormComponent implements OnInit {
   @Input() set video(video: Video) {
     this._video = video;
     if (video && this.videoForm) {
-      this.videoForm.patchValue(video);
+      this.setVideo(video);
     }
   }
 
@@ -45,9 +45,7 @@ export class VideoFormComponent implements OnInit {
     });
 
     if (this.video) {
-      this.videoForm.patchValue(this.video);
-      this.attachment = this.video.attachment;
-      this.preview = this.video.preview;
+      this.setVideo(this.video);
     }
   }
 
@@ -79,22 +77,22 @@ export class VideoFormComponent implements OnInit {
   private uploadFile(file: File) {
     this.uploading = true;
     this.videosService.upload(file)
-    .pipe(
-      tap(event => {
-        if (event.hasOwnProperty('type') && event.type === HttpEventType.UploadProgress) {
-          this.showProgress(event);
-        }
-      }),
-      last(),
-    )
-    .subscribe((response: HttpResponse<{ data: Attachment }>) => {
-      this.attachment = response.body.data;
-      this.preview = this.attachment.thumbnails[0];
-      this.uploading = false;
-      this.videoForm.get('attachment_id').patchValue(this.attachment.id);
-      this.videoForm.get('preview_id').patchValue(this.preview.id);
-      this.videoUploaded.emit(this.videoForm.value);
-    });
+      .pipe(
+        tap(event => {
+          if (event.hasOwnProperty('type') && event.type === HttpEventType.UploadProgress) {
+            this.showProgress(event);
+          }
+        }),
+        last(),
+      )
+      .subscribe((response: HttpResponse<{ data: Attachment }>) => {
+        this.attachment = response.body.data;
+        this.preview = this.attachment.thumbnails[0];
+        this.uploading = false;
+        this.videoForm.get('attachment_id').patchValue(this.attachment.id);
+        this.videoForm.get('preview_id').patchValue(this.preview.id);
+        this.videoUploaded.emit(this.videoForm.value);
+      });
   }
 
   onSubmit() {
@@ -103,6 +101,17 @@ export class VideoFormComponent implements OnInit {
 
   makePristine() {
     this.videoForm.markAsPristine();
+  }
+
+  private setVideo(video: Video) {
+    this.videoForm.patchValue({
+      title: video.title,
+      description: video.description,
+      attachment_id: video.attachment.id,
+      preview_id: video.preview.id,
+    });
+    this.attachment = video.attachment;
+    this.preview = video.preview;
   }
 
   get video() {

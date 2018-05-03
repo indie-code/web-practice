@@ -51,6 +51,7 @@ mat-form-field {
 
 .video-previews {
   display: flex;
+  margin-bottom: 20px;
 }
 
 .video-previews > img {
