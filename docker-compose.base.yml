@@ -31,6 +31,14 @@ services:
       - ./api/docker/php/php.ini:/usr/local/etc/php/php.ini
       - ~/.composer:/root/.composer
 
+  laravel-horizon:
+    build:
+      context: ./api
+      dockerfile: ./docker/laravel-horizon/Dockerfile
+    command: /usr/bin/env php artisan horizon
+    volumes:
+      - ./api:/var/www/html
+
   nginx:
     image: nginx:alpine
     volumes:
