@@ -5,6 +5,7 @@ stages:
 jobs:
   include:
     - language: generic
+      env: NAME="PHP tests"
       stage: testing
       sudo: required
       services:
@@ -21,6 +22,7 @@ jobs:
         - ./develop.sh run --rm php php vendor/bin/phpunit
 
     - stage: testing
+      env: NAME="Angular tests"
       language: node_js
       sudo: required
       node_js:
@@ -34,9 +36,10 @@ jobs:
         - cd front
         - npm install
       script:
-        - node_modules/.bin/ng test --single-run --browsers=ChromeHeadless --progress=false
+        - node_modules/.bin/ng test --single-run --browsers ChromeHeadless --progress false --reporters dots
 
     - stage: code-quality
+      env: NAME="Angular lint"
       language: node_js
       node_js:
         - "8"
