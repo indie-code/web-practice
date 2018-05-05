@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  of as observableOf ,  BehaviorSubject } from 'rxjs';
 import { flatMap, map, publishReplay, refCount, tap } from 'rxjs/operators';
 import { TokenStorageService } from '../token-storage.service';
-import { of as observableOf } from 'rxjs/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { User } from '../models/user';
 
 @Injectable()

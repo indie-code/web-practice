@@ -1,0 +1,22 @@
+{
+    "appKey": "your-app-key",
+    "authEndpoint": "/broadcasting/auth",
+    "authHost": "https://uley-dev.u-k-s.ru",
+    "database": "redis",
+    "databaseConfig": {
+        "redis": {
+            "host": "192.168.100.73",
+            "port": 6379,
+            "db": 0
+        }
+    },
+    "devMode": false,
+    "host": "echo",
+    "port": "6001",
+    "protocol": "https",
+    "referrers": [],
+    "sslCertPath": "/etc/ssl/certs/bundle.crt",
+    "sslKeyPath": "/etc/ssl/certs/server.key",
+    "verifyAuthPath": true,
+    "verifyAuthServer": false
+}

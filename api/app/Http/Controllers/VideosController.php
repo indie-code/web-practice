@@ -4,12 +4,9 @@
 namespace App\Http\Controllers;
 
 
-use App\Attachment;
-use App\Http\Requests\VideosSaveRequest;
-use App\Http\Resources\VideoFullResource;
+
 use App\Http\Resources\VideoResource;
 use App\Video;
-use Auth;
 
 class VideosController extends Controller
 {

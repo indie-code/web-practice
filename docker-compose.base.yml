@@ -30,14 +30,23 @@ services:
       - ./api:/var/www/html
       - ./api/docker/php/php.ini:/usr/local/etc/php/php.ini
       - ~/.composer:/root/.composer
+    depends_on:
+      - db
 
-  laravel-horizon:
+  horizon:
     build:
       context: ./api
-      dockerfile: ./docker/laravel-horizon/Dockerfile
+      dockerfile: ./docker/horizon/Dockerfile
     command: /usr/bin/env php artisan horizon
     volumes:
       - ./api:/var/www/html
+
+  echo:
+    build: ./echo
+    volumes:
+      - ./echo/laravel-echo-server.json:/var/www/html/laravel-echo-server.json
+    depends_on:
+      - redis
 
   nginx:
     image: nginx:alpine
@@ -49,6 +58,9 @@ services:
     working_dir: /var/www/html
     ports:
       - 8080:80
+    depends_on:
+      - echo
+      - php
 
   redis:
     image: redis:alpine
