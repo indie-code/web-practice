@@ -22,6 +22,7 @@ import {TokenStorageService} from './token-storage.service';
 import {AuthInterceptor} from './auth.interceptor';
 import {ProfileMenuComponent} from './profile-menu/profile-menu.component';
 import {AuthService} from './services/auth.service';
+import {EchoService} from './services/echo.service';
 
 
 @NgModule({
@@ -49,7 +50,7 @@ import {AuthService} from './services/auth.service';
     ApiService,
 
     AuthService,
-
+    EchoService,
     TokenStorageService,
     {
       provide: HTTP_INTERCEPTORS,

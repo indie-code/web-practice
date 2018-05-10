@@ -4,8 +4,7 @@ import { SignUpComponent } from './sign-up.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthResponse, AuthService, SignUpForm } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { makeValidationErrors } from '../../helpers/response-helpers.spec';
 

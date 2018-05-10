@@ -39,6 +39,13 @@ services:
     volumes:
       - ./api:/var/www/html
 
+  echo:
+    build:
+      context: ./echo
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./echo/laravel-echo-server.json:/var/www/html/laravel-echo-server.json
+
   nginx:
     image: nginx:alpine
     volumes:
