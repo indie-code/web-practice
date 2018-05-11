@@ -27,10 +27,10 @@
       </ng-container>
 
     </div>
-    <div *ngIf="attachment" class="video-previews">
+    <div *ngIf="thumbnails.length" class="video-previews">
       <img
         (click)="changePreview(preview)"
-        *ngFor="let preview of attachment.thumbnails"
+        *ngFor="let preview of thumbnails"
         [src]="preview.url"/>
     </div>
     <div>

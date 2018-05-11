@@ -3,7 +3,7 @@
 namespace App\Components;
 
 
-use Auth;
+use App\Attachment;
 use FFMpeg;
 use Illuminate\Support\Collection;
 
@@ -26,7 +26,7 @@ class FFMpegService
                     ->toDisk('thumbnails')
                     ->save($thumb_name);
 
-                return Auth::user()->attachments()->create([
+                return new Attachment([
                     'file_name' => $thumb_name,
                     'mime_type' => 'png',
                     'url' => url('thumbnails/' . $thumb_name),

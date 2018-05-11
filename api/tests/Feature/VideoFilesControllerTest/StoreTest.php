@@ -6,6 +6,8 @@ namespace Tests\Feature\VideoFilesControllerTest;
 
 use App\Attachment;
 use App\Components\FFMpegService;
+use App\Events\ThumbnailsCreated;
+use App\Jobs\VideoThumbnailsJob;
 use App\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -31,14 +33,7 @@ class StoreTest extends TestCase
     public function attachments_store()
     {
         Storage::fake('videos');
-
-        $ffmpegService = Mockery::mock(FFMpegService::class);
-        $thumbnails = factory(Attachment::class, 3)->create();
-        $this->app->instance(FFMpegService::class, $ffmpegService);
-        $ffmpegService->shouldReceive('makeThumbnails')
-            ->once()
-            ->andReturn($thumbnails);
-
+        $this->expectsJobs(VideoThumbnailsJob::class);
         $response = $this
             ->loginAs()
             ->postJson(route('video-files.store'), ['file' => $this->file])
@@ -46,8 +41,6 @@ class StoreTest extends TestCase
 
         $this->assertNotNull($response->json('data.id'));
         $this->assertEquals(route('video-files.show', $this->file->hashName()), $response->json('data.url'));
-
-        $this->assertCount(3, $response->json('data.thumbnails'));
 
         Storage::disk('videos')->assertExists($this->file->hashName());
     }

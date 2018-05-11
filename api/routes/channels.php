@@ -11,6 +11,9 @@
 |
 */
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+use App\Attachment;
+use App\User;
+
+Broadcast::channel('video-file.{attachment}', function (User $user, Attachment $attachment) {
+    return $attachment->user_id === $user->id;
 });

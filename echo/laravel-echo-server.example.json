@@ -1,0 +1,22 @@
+{
+	"authHost": "http://nginx",
+	"authEndpoint": "/broadcasting/auth",
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {
+			"host": "redis",
+			"password": "app"
+		}
+	},
+	"devMode": true,
+	"host": null,
+	"port": "6001",
+	"protocol": "http",
+	"socketio": {
+		"path": "/ws"
+	},
+	"sslCertPath": "",
+	"sslKeyPath": "",
+	"sslCertChainPath": "",
+	"sslPassphrase": ""
+}

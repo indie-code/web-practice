@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {takeUntil, flatMap, first} from 'rxjs/operators';
 import {VideosService} from '../videos.service';
 import {Video} from '../video-interfaces';

@@ -6,8 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Attachment;
 use App\Components\FFMpegService;
+use App\Events\ThumbnailsCreated;
 use App\Exceptions\VideoNotFoundException;
 use App\Http\Resources\AttachmentResource;
+use App\Jobs\VideoThumbnailsJob;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Storage;
@@ -33,11 +35,8 @@ class VideoFilesController extends Controller
             'url' => route('video-files.show', $fileName),
         ]);
 
-        $thumbName = mb_substr($fileName, 0, - strlen($file->getClientOriginalExtension()) - 1);
-        $thumbnails = $ffmpegService->makeThumbnails($fileName, $thumbName);
+        $this->dispatch(new VideoThumbnailsJob($attachment));
 
-        $attachment->thumbnails()->saveMany($thumbnails);
-        $attachment->load('thumbnails');
 
         return new AttachmentResource($attachment);
     }
