@@ -31,7 +31,7 @@ services:
       - ./api/docker/php/php.ini:/usr/local/etc/php/php.ini
       - ~/.composer:/root/.composer
 
-  laravel-horizon:
+  horizon:
     build:
       context: ./api
       dockerfile: ./docker/laravel-horizon/Dockerfile

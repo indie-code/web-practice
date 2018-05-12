@@ -9,7 +9,7 @@ export REDIS_PASSWORD=${REDIS_PASSWORD:-app}
 case "$1" in
     "art")
         shift 1
-        COMMAND="run --rm php php artisan $@"
+        COMMAND="exec php php artisan $@"
     ;;
     "composer")
         shift 1
