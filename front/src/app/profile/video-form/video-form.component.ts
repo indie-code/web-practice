@@ -1,17 +1,18 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {Attachment, Video} from '../video-interfaces';
-import {last, takeUntil, tap} from 'rxjs/operators';
-import {HttpEventType, HttpProgressEvent, HttpResponse} from '@angular/common/http';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UploadOutput} from 'ngx-uploader';
-import {VideosService} from '../videos.service';
-import {EchoService} from '../../services/echo.service';
-import {Subject} from 'rxjs';
+import { HttpEventType } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UploadOutput } from 'ngx-uploader';
+import { Subject } from 'rxjs';
+import { from } from 'rxjs/internal/observable/from';
+import { first, flatMap, last, takeUntil, tap } from 'rxjs/operators';
+import { EchoService } from '../../services/echo.service';
+import { Attachment, Video } from '../video-interfaces';
+import { Chunk, VideosService } from '../videos.service';
 
 @Component({
   selector: 'app-video-form',
   templateUrl: './video-form.component.html',
-  styleUrls: ['./video-form.component.css']
+  styleUrls: ['./video-form.component.css'],
 })
 export class VideoFormComponent implements OnInit, OnDestroy {
 
@@ -33,6 +34,8 @@ export class VideoFormComponent implements OnInit, OnDestroy {
   attachment: Attachment;
   preview: Attachment;
   thumbnails: Attachment[] = [];
+  chunks: Chunk[];
+  size: number;
 
   private _video: Video;
   private destroy$ = new Subject();
@@ -68,10 +71,6 @@ export class VideoFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  showProgress(event: HttpProgressEvent) {
-    this.progress = event.loaded / event.total;
-  }
-
   changePreview(thumbnail: Attachment) {
     this.preview = thumbnail;
     this.videoForm.get('preview_id').patchValue(thumbnail.id);
@@ -79,30 +78,64 @@ export class VideoFormComponent implements OnInit, OnDestroy {
   }
 
   private uploadFile(file: File) {
+    this.thumbnails = [];
+    this.preview = undefined;
+    this.videoForm.get('preview_id').reset();
+    this.videoForm.get('attachment_id').reset();
+    this.progress = 0;
     this.uploading = true;
-    this.videosService.upload(file)
-      .pipe(
-        tap(event => {
-          if (event.hasOwnProperty('type') && event.type === HttpEventType.UploadProgress) {
-            this.showProgress(event);
-          }
-        }),
-        last(),
-      )
-      .subscribe((response: HttpResponse<{ data: Attachment }>) => {
-        this.attachment = response.body.data;
-        this.uploading = false;
-        this.videoForm.get('attachment_id').patchValue(this.attachment.id);
-        this.videoUploaded.emit(this.videoForm.value);
 
-        this.echoService.privateChannel<Attachment[]>(`video-file.${this.attachment.id}`, 'ThumbnailsCreated')
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(thumbnails => {
-            this.thumbnails = thumbnails;
-            this.preview = thumbnails[0];
-            this.videoForm.get('preview_id').patchValue(this.preview.id);
+    this.size = file.size;
+    this.chunks = [];
+
+    const chunkSize = 10 * 1024 * 1024;
+
+    let end = 0;
+    let start;
+    while (end < this.size) {
+      start = end;
+      end = Math.min(end + chunkSize, this.size);
+      this.chunks.push({
+        start,
+        end,
+        loaded: 0,
+        blob: file.slice(start, end, file.type),
+      });
+    }
+
+    this.videosService.upload(this.size)
+      .pipe(first())
+      .subscribe(attachment => {
+        this.attachment = attachment;
+        from(this.chunks)
+          .pipe(
+            flatMap((chunk: Chunk) => {
+              return this.videosService.uploadChunk(this.attachment, chunk)
+                .pipe(tap(event => this.handleUpload(event, chunk)));
+            }, 2),
+            last(),
+          )
+          .subscribe(r => {
+            this.uploading = false;
+            this.attachment = r.body.data;
+            this.videoForm.get('attachment_id').patchValue(this.attachment.id);
+            this.videoUploaded.emit(this.videoForm.value);
+            this.echoService.privateChannel<Attachment[]>(`video-file.${this.attachment.id}`, 'ThumbnailsCreated')
+              .pipe(takeUntil(this.destroy$))
+              .subscribe(thumbnails => {
+                this.thumbnails = thumbnails;
+                this.preview = thumbnails[0];
+                this.videoForm.get('preview_id').patchValue(this.preview.id);
+              });
           });
       });
+  }
+
+  private handleUpload(event, chunk: Chunk) {
+    if (event.hasOwnProperty('type') && event.type === HttpEventType.UploadProgress) {
+      chunk.loaded = event.loaded;
+      this.progress = this.chunks.reduce((prev, c) => prev + c.loaded, 0) / this.size;
+    }
   }
 
   onSubmit() {

@@ -33,16 +33,17 @@ class StoreTest extends TestCase
     public function attachments_store()
     {
         Storage::fake('videos');
-        $this->expectsJobs(VideoThumbnailsJob::class);
+
+        $this->doesntExpectJobs(VideoThumbnailsJob::class);
         $response = $this
             ->loginAs()
-            ->postJson(route('video-files.store'), ['file' => $this->file])
+            ->postJson(route('video-files.store'), ['size' => $this->file->getSize()])
             ->assertSuccessful();
 
         $this->assertNotNull($response->json('data.id'));
-        $this->assertEquals(route('video-files.show', $this->file->hashName()), $response->json('data.url'));
-
-        Storage::disk('videos')->assertExists($this->file->hashName());
+        /** @var Attachment $attachment */
+        $attachment = Attachment::findOrFail($response->json('data.id'));
+        Storage::disk('videos')->assertExists($attachment->file_name);
     }
 
     /**

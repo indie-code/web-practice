@@ -19,4 +19,9 @@ class AttachmentsPolicy
     {
         return $attachment->user_id === $user->id;
     }
+
+    public function uploadChunk(User $user, Attachment $attachment)
+    {
+        return ! $attachment->isUploaded() && $attachment->user_id === $user->id;
+    }
 }

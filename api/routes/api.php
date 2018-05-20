@@ -10,10 +10,16 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::get('video-files/{video_file}', 'VideoFilesController@show')
+        ->name('video-files.show')
+        ->where('video_file', '.*');
+
+    Route::post('video-files/{attachment}', 'VideoFilesController@storeChunk')
+        ->name('video-files.store-chunk');
+
     Route::resource('video-files', 'VideoFilesController')
         ->only(['store', 'show'])
-        ->names('video-files')
-        ->parameters(['video_file' => '.*']);
+        ->names('video-files');
 
     Route::resource('profile/videos', 'UserVideosController')
         ->only(['store', 'update', 'index'])
