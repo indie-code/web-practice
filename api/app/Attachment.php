@@ -2,6 +2,10 @@
 
 namespace App;
 
+use Carbon\Carbon;
+use DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,21 +17,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $object_id
  * @property string $file_name
  * @property string $mime_type
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereFileName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereMimeType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereObjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereObjectType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereUserId($value)
- * @mixin \Eloquent
- * @property-read \App\User $user
  * @property string $url
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Attachment[] $thumbnails
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereUrl($value)
+ * @property int|null $size
+ * @property int $uploaded_size
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read User $user
+ * @property-read Collection|Attachment[] $thumbnails
+ * @method static Builder|Attachment whereCreatedAt($value)
+ * @method static Builder|Attachment whereFileName($value)
+ * @method static Builder|Attachment whereId($value)
+ * @method static Builder|Attachment whereMimeType($value)
+ * @method static Builder|Attachment whereObjectId($value)
+ * @method static Builder|Attachment whereObjectType($value)
+ * @method static Builder|Attachment whereUpdatedAt($value)
+ * @method static Builder|Attachment whereUserId($value)
+ * @method static Builder|Attachment whereUrl($value)
+ * @method static Builder|Attachment whereSize($value)
+ * @method static Builder|Attachment whereUploadedSize($value)
+ * @mixin \Eloquent
  */
 class Attachment extends Model
 {
@@ -35,6 +43,8 @@ class Attachment extends Model
         'file_name',
         'mime_type',
         'url',
+        'size',
+        'uploaded_size',
     ];
 
     public function user()
@@ -45,5 +55,16 @@ class Attachment extends Model
     public function thumbnails()
     {
         return $this->morphMany(Attachment::class, 'object');
+    }
+
+    public function incrementUploadedSize(int $size)
+    {
+        DB::table($this->getTable())->where('id', $this->id)->increment('uploaded_size', $size);
+        $this->refresh();
+    }
+
+    public function isUploaded()
+    {
+        return $this->size && $this->size === $this->uploaded_size;
     }
 }

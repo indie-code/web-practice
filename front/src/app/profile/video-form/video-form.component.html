@@ -22,7 +22,7 @@
           <div class="load-text">
             Загрузка... {{ progress | percent }}
           </div>
-          <mat-progress-bar [value]="progress" mode="determinate"></mat-progress-bar>
+          <mat-progress-bar [value]="progress * 100" mode="determinate"></mat-progress-bar>
         </ng-container>
       </ng-container>
 

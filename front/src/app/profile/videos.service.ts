@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {ApiService} from '../api.service';
-import {Observable} from 'rxjs';
-import {Video} from './video-interfaces';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiService } from '../api.service';
+import { Attachment, Video } from './video-interfaces';
 
 @Injectable()
 export class VideosService {
@@ -10,11 +10,18 @@ export class VideosService {
   constructor(private api: ApiService) {
   }
 
-  upload(file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
+  upload(totalSize: number): Observable<Attachment> {
+    return this.api.post('video-files', {size: totalSize})
+      .pipe(map(response => response.data));
+  }
 
-    return this.api.request('POST', 'video-files', formData, {reportProgress: true});
+  uploadChunk(attachment: Attachment, chunk: Chunk): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', chunk.blob);
+    formData.append('start', chunk.start.toString(10));
+    console.log(chunk.start);
+
+    return this.api.request('POST', `video-files/${attachment.id}`, formData, {reportProgress: true});
   }
 
   my(): Observable<Video[]> {
@@ -34,3 +41,9 @@ export class VideosService {
   }
 }
 
+export interface Chunk {
+  start: number;
+  end: number;
+  loaded: number;
+  blob: Blob;
+}
