@@ -1,47 +1,47 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subject} from 'rxjs';
-import {takeUntil, flatMap, first} from 'rxjs/operators';
-import {VideosService} from '../videos.service';
-import {Video} from '../video-interfaces';
-import {VideoFormComponent} from '../video-form/video-form.component';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, flatMap, first, tap } from 'rxjs/operators';
+import { VideosService } from '../videos.service';
+import { Video } from '../video-interfaces';
+import { UploadingFilesDataService } from '../../uploading-files/uploading-files-data.service';
 
 @Component({
   selector: 'app-videos-edit',
   templateUrl: './videos-edit.component.html',
-  styleUrls: ['./videos-edit.component.css']
+  styleUrls: ['./videos-edit.component.css'],
 })
 export class VideosEditComponent implements OnInit, OnDestroy {
-
-  @ViewChild(VideoFormComponent) private videoFormComponent;
 
   video: Video;
 
   private destroy$ = new Subject();
 
-  constructor(private activatedRoute: ActivatedRoute, private videosService: VideosService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private videosService: VideosService,
+    private uploadingFilesDataService: UploadingFilesDataService,
+  ) {
 
   }
 
   ngOnInit() {
     this.activatedRoute.params
-    .pipe(
-      takeUntil(this.destroy$),
-      flatMap(params => this.videosService.video(params.id)),
-      first()
-    ).subscribe(video => this.video = video);
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(params => this.uploadingFilesDataService.videoOpened(Number(params.id))),
+        flatMap(params => this.videosService.video(params.id)),
+        first(),
+      ).subscribe(video => this.video = video);
   }
 
-  update(video: Video) {
-    this.videosService.update(this.video.id, video)
-    .pipe(first()).subscribe(responseVideo => {
-      this.video = responseVideo;
-      this.videoFormComponent.makePristine();
-    });
+  onSaved(video: Video) {
+    this.video = video;
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.uploadingFilesDataService.videoClosed(this.video.id);
   }
 }

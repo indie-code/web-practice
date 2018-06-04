@@ -6,10 +6,11 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use JWTAuth;
+use Tests\Components\MocksGate;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication, DatabaseTransactions;
+    use CreatesApplication, DatabaseTransactions, MocksGate;
 
     /**
      * @var User

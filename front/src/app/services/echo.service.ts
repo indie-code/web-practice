@@ -35,6 +35,9 @@ export class EchoService {
     );
   }
 
+  leave(channelName: string) {
+    this.echo.leave(channelName);
+  }
 }
 
 interface SocketEvent {

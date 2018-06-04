@@ -8,3 +8,9 @@
   display: grid;
   grid-template-columns: auto 1fr auto;
 }
+
+/*::ng-deep .mat-snack-bar-container {*/
+  /*background-color: #fff;*/
+  /*border: 1px solid #eee;*/
+  /*color: #000;*/
+/*}*/

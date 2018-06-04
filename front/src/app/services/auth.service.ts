@@ -3,11 +3,11 @@ import { ApiService } from '../api.service';
 import { Observable ,  of as observableOf ,  BehaviorSubject } from 'rxjs';
 import { flatMap, map, publishReplay, refCount, tap } from 'rxjs/operators';
 import { TokenStorageService } from '../token-storage.service';
-import { User } from '../models/user';
+import { AuthUser } from '../models/user';
 
 @Injectable()
 export class AuthService {
-    private user$: BehaviorSubject<User> = new BehaviorSubject<User>(undefined);
+    private user$: BehaviorSubject<AuthUser> = new BehaviorSubject<AuthUser>(undefined);
     private loadUser$ = this.loadUser().pipe(publishReplay(), refCount());
 
     constructor(
@@ -21,7 +21,7 @@ export class AuthService {
     }
 
     loadUser(): Observable<AuthResponse> {
-        if (!this.tokenStorageService.token()) {
+        if (! this.tokenStorageService.token()) {
             return observableOf(undefined);
         }
 
@@ -63,5 +63,5 @@ export interface SignInForm {
 }
 
 export interface AuthResponse {
-    user: User;
+    user: AuthUser;
 }

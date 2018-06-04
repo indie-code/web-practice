@@ -20,12 +20,12 @@ class UserVideosController extends Controller
     private function saveVideo(VideosSaveRequest $request, Video $video)
     {
         $video->fill($request->only(['title', 'description']));
-        if ($request->has('attachment_id')) {
+        if ($request->filled('attachment_id')) {
             $attachment = Attachment::findOrFail($request->input('attachment_id'));
             $video->attachment()->save($attachment);
         }
 
-        if ($request->has('preview_id')) {
+        if ($request->filled('preview_id')) {
             $video->preview()->associate($request->input('preview_id'));
         }
 

@@ -1,8 +1,6 @@
-import {Component} from '@angular/core';
-import {VideosService} from '../videos.service';
-import {Video} from '../video-interfaces';
-import {Router} from '@angular/router';
-import {first} from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { Video } from '../video-interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-videos-create',
@@ -11,13 +9,11 @@ import {first} from 'rxjs/operators';
 export class VideosCreateComponent {
 
   constructor(
-    private videosService: VideosService,
-    private router: Router
-    ) {}
+    private router: Router,
+  ) {
+  }
 
   create(video: Video) {
-    this.videosService.store(video)
-    .pipe(first())
-    .subscribe(responseVideo => this.router.navigateByUrl('/profile/videos-edit/' + responseVideo.id));
+    this.router.navigateByUrl('/profile/videos-edit/' + video.id);
   }
 }

@@ -10,8 +10,8 @@ export class VideosService {
   constructor(private api: ApiService) {
   }
 
-  upload(totalSize: number): Observable<Attachment> {
-    return this.api.post('video-files', {size: totalSize})
+  upload(totalSize: number, videoId: number): Observable<Attachment> {
+    return this.api.post('video-files', {size: totalSize, video_id: videoId})
       .pipe(map(response => response.data));
   }
 
@@ -19,7 +19,6 @@ export class VideosService {
     const formData = new FormData();
     formData.append('file', chunk.blob);
     formData.append('start', chunk.start.toString(10));
-    console.log(chunk.start);
 
     return this.api.request('POST', `video-files/${attachment.id}`, formData, {reportProgress: true});
   }
@@ -32,11 +31,11 @@ export class VideosService {
     return this.api.get('videos/' + id).pipe(map(response => response.data));
   }
 
-  store(video: Video) {
+  store(video: Video): Observable<Video> {
     return this.api.post('profile/videos', video).pipe(map(response => response.data));
   }
 
-  update(videoId: number, video: Video) {
+  update(videoId: number, video: Video): Observable<Video> {
     return this.api.put(`profile/videos/${videoId}`, video).pipe(map(response => response.data));
   }
 }

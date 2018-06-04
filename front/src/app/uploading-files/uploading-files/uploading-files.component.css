@@ -1,0 +1,19 @@
+:host {
+  overflow-y: auto;
+  display: block;
+  max-height: 90vh;
+}
+
+.uploading-item {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.uploading-item > mat-progress-spinner {
+  margin-right: 10px;
+}
+
+.mat-subheader {
+  color: #fff;
+}
