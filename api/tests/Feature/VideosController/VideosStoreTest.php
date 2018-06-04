@@ -81,7 +81,7 @@ class VideosStoreTest extends TestCase
                 'preview_id' => 999,
                 ])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['title', 'attachment_id', 'preview_id']);
+            ->assertJsonValidationErrors(['attachment_id', 'preview_id']);
     }
 
     /**

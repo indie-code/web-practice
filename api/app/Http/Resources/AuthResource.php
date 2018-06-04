@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Attachment;
 use Illuminate\Http\Resources\Json\JsonResource;
-use JWTAuth;
 
 class AuthResource extends JsonResource
 {
@@ -20,6 +20,11 @@ class AuthResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'email' => $this->email,
+                'permissions' => [
+                    'attachments' => [
+                        'upload' => $this->can('upload', Attachment::class),
+                    ],
+                ],
             ],
         ];
     }

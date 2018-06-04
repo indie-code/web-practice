@@ -57,6 +57,11 @@ class Attachment extends Model
         return $this->morphMany(Attachment::class, 'object');
     }
 
+    public function video()
+    {
+        return $this->morphTo('video', 'object_type', 'object_id');
+    }
+
     public function incrementUploadedSize(int $size)
     {
         DB::table($this->getTable())->where('id', $this->id)->increment('uploaded_size', $size);

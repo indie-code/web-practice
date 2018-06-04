@@ -11,7 +11,7 @@ describe('SignInComponent', () => {
     let fixture: ComponentFixture<SignInComponent>;
     let component: SignInComponent;
     const routerSpy = jasmine.createSpyObj(Router.name, ['navigateByUrl']);
-    const successResponse = {user: {id: 1, email: 'test@test.ru', name: 'Иван'}};
+    const successResponse = {user: {id: 1, email: 'test@test.ru', name: 'Иван', permissions: {attachments: {upload: true}}}};
     const validationErrors = makeValidationErrors({
         email: ['email error'],
         password: ['password error'],

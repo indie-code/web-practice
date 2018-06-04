@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Attachment;
 use App\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 

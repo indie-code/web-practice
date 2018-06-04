@@ -36,7 +36,7 @@ class VideosSaveRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
+            'title' => 'nullable|max:255',
             'attachment_id' => 'nullable|exists:attachments,id',
             'preview_id' => 'nullable|exists:attachments,id',
         ];

@@ -19,6 +19,8 @@ class AttachmentResource extends JsonResource
             'url' => $this->url,
             'thumbnails' => AttachmentResource::collection($this->whenLoaded('thumbnails')),
             'uploaded_size' => $this->uploaded_size,
+            'size' => $this->size,
+            'video' => new VideoResource($this->whenLoaded('video')),
         ];
     }
 }

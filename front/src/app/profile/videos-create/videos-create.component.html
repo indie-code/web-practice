@@ -1,4 +1,4 @@
 <mat-card-title>Создание нового видео</mat-card-title>
 <mat-card-content>
-  <app-video-form (submitForm)="create($event)" ></app-video-form>
+  <app-video-form (saved)="create($event)"></app-video-form>
 </mat-card-content>

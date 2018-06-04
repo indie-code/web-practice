@@ -4,6 +4,6 @@
     <a class="edit-link" [routerLink]="['/profile/videos-edit', video.id]">
       <mat-icon>edit</mat-icon>
     </a>
-    <a [routerLink]="['/profile/videos', video.id]">{{ video.title }}</a>
+    <a [routerLink]="['/profile/videos', video.id]">{{ video.title || 'Видео #' + video.id }}</a>
   </mat-list-item>
 </mat-list>

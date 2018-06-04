@@ -1,6 +1,6 @@
 <ng-container *ngIf="video">
-  <mat-card-title>Видео "{{ video.title }}"</mat-card-title>
+  <mat-card-title>Видео {{ video.title ? '"' + video.title + '"' : '#' + video.id }}</mat-card-title>
   <mat-card-content>
-    <app-video-form [video]="video" (submitForm)="update($event)" (videoUploaded)="update($event)"></app-video-form>
+    <app-video-form (saved)="onSaved($event)" [video]="video"></app-video-form>
   </mat-card-content>
 </ng-container>

@@ -1,0 +1,19 @@
+<mat-nav-list>
+  <h3 mat-subheader >Загрузки</h3>
+  <a mat-list-item *ngFor="let attachment of data.attachments" >
+    <span class="uploading-item" >
+      <mat-progress-spinner
+        [strokeWidth]="10"
+        [diameter]="20"
+        color="accent"
+        [value]="(attachment.uploaded_size / attachment.size) * 100"
+      ></mat-progress-spinner>
+      <a *ngIf="attachment.video" [routerLink]="['/profile/videos-edit', attachment.video.id]">
+        {{ attachment.video.title || 'Видео #' + attachment.video.id }}
+      </a>
+      <ng-container *ngIf="! attachment.video" >
+        Новое видео
+      </ng-container>
+    </span>
+  </a>
+</mat-nav-list>

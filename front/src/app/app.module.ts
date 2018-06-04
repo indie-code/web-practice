@@ -10,8 +10,8 @@ import {
   MatDividerModule,
   MatIconModule,
   MatMenuModule,
-  MatProgressBarModule,
-  MatToolbarModule
+  MatProgressBarModule, MatSnackBarModule,
+  MatToolbarModule,
 } from '@angular/material';
 import {RouterModule} from '@angular/router';
 import {HomePageComponent} from './home-page/home-page.component';
@@ -23,6 +23,8 @@ import {AuthInterceptor} from './auth.interceptor';
 import {ProfileMenuComponent} from './profile-menu/profile-menu.component';
 import {AuthService} from './services/auth.service';
 import {EchoService} from './services/echo.service';
+import {UploadingFilesModule} from './uploading-files/uploading-files.module';
+import { UploadingFilesDataService } from './uploading-files/uploading-files-data.service';
 
 
 @NgModule({
@@ -35,6 +37,7 @@ import {EchoService} from './services/echo.service';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    RouterModule.forRoot(routes),
 
     MatToolbarModule,
     MatButtonModule,
@@ -43,14 +46,16 @@ import {EchoService} from './services/echo.service';
     MatDividerModule,
     MatProgressBarModule,
     MatCardModule,
+    MatSnackBarModule,
 
-    RouterModule.forRoot(routes),
+    UploadingFilesModule,
   ],
   providers: [
     ApiService,
 
     AuthService,
     EchoService,
+    UploadingFilesDataService,
     TokenStorageService,
     {
       provide: HTTP_INTERCEPTORS,
